@@ -128,8 +128,9 @@
         if (msg.duration != null && msg.progress != null) {
           dom.progressBar.value = msg.progress;
           const dur = +msg.duration || +state.currentSong?.duration || 0;
-          dom.currentTime.textContent = Utils.formatTime(msg.progress, dur);
-          if (dur) {
+          const cur = Utils.formatTime(msg.progress, dur);
+          if (cur !== dom.currentTime.textContent) dom.currentTime.textContent = cur;
+          if (dur && dom.durationTime.textContent === '0:00') {
             dom.durationTime.textContent = Utils.formatTime(100, dur);
           }
         }
@@ -149,7 +150,8 @@
         if (msg.duration && state.currentSong) {
           state.currentSong.duration = +msg.duration;
         }
-        dom.currentTime.textContent = Utils.formatTime(msg.progress, dur);
+        const cur = Utils.formatTime(msg.progress, dur);
+        if (cur !== dom.currentTime.textContent) dom.currentTime.textContent = cur;
         if (dur && dom.durationTime.textContent === '0:00') {
           dom.durationTime.textContent = Utils.formatTime(100, dur);
         }
@@ -216,11 +218,11 @@
     state.biliPage = local.mf_bili_page || 0;
     state.biliTotal = local.mf_bili_total || 0;
 
-    // Restore progress display
-    if (state.isPlaying && local.mf_progress) {
+    // Restore progress display (also for paused state)
+    if (state.currentSong && local.mf_progress != null) {
       const pct = parseFloat(local.mf_progress) || 0;
       dom.progressBar.value = pct;
-      const dur = +local.mf_duration || 0;
+      const dur = state.currentSong.duration || +local.mf_duration || 0;
       dom.currentTime.textContent = Utils.formatTime(pct, dur);
       if (dur) dom.durationTime.textContent = Utils.formatTime(100, dur);
     }
@@ -329,7 +331,8 @@
         const pct = parseFloat(changes.mf_progress.newValue) || 0;
         dom.progressBar.value = pct;
         const dur = +state.currentSong?.duration || 0;
-        dom.currentTime.textContent = Utils.formatTime(pct, dur);
+        const cur = Utils.formatTime(pct, dur);
+        if (cur !== dom.currentTime.textContent) dom.currentTime.textContent = cur;
         if (dur && dom.durationTime.textContent === '0:00') {
           dom.durationTime.textContent = Utils.formatTime(100, dur);
         }
