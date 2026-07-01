@@ -42,6 +42,7 @@
     const songCov  = currentSong ? currentSong.cover : '';
     const dur      = currentSong && isFinite(audio.duration) ? audio.duration : undefined;
     const page     = (extra.mf_bili_page != null) ? extra.mf_bili_page : 0;
+    const total    = (extra.mf_bili_total != null) ? extra.mf_bili_total : 0;
     const title    = extra.mf_bili_page_title || (biliPages[page] && biliPages[page].part) || '';
     // Primary: push through the port for instant UI update in popup
     if (playerPort) {
@@ -53,6 +54,8 @@
           cover: songCov,
           duration: dur,
           biliPages: biliPages.length ? biliPages : undefined,
+          mf_bili_page: page,
+          mf_bili_total: total,
           bili_page_title: title,
           ...extra
         });
@@ -68,6 +71,8 @@
           mf_web: songWeb,
           mf_cover: songCov,
           mf_duration: dur,
+          mf_bili_page: page,
+          mf_bili_total: total,
           mf_bili_pages: biliPages.length ? biliPages : undefined,
           mf_bili_page_title: title,
           ...extra
