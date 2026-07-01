@@ -130,8 +130,9 @@
           const dur = +msg.duration || +state.currentSong?.duration || 0;
           const cur = Utils.formatTime(msg.progress, dur);
           if (cur !== dom.currentTime.textContent) dom.currentTime.textContent = cur;
-          if (dur && dom.durationTime.textContent === '0:00') {
-            dom.durationTime.textContent = Utils.formatTime(100, dur);
+          if (dur) {
+            const total = Utils.formatTime(100, dur);
+            if (total !== dom.durationTime.textContent) dom.durationTime.textContent = total;
           }
         }
         updateBiliPager();
@@ -152,8 +153,9 @@
         }
         const cur = Utils.formatTime(msg.progress, dur);
         if (cur !== dom.currentTime.textContent) dom.currentTime.textContent = cur;
-        if (dur && dom.durationTime.textContent === '0:00') {
-          dom.durationTime.textContent = Utils.formatTime(100, dur);
+        if (dur) {
+          const total = Utils.formatTime(100, dur);
+          if (total !== dom.durationTime.textContent) dom.durationTime.textContent = total;
         }
       }
     });
@@ -333,8 +335,9 @@
         const dur = +state.currentSong?.duration || 0;
         const cur = Utils.formatTime(pct, dur);
         if (cur !== dom.currentTime.textContent) dom.currentTime.textContent = cur;
-        if (dur && dom.durationTime.textContent === '0:00') {
-          dom.durationTime.textContent = Utils.formatTime(100, dur);
+        if (dur) {
+          const total = Utils.formatTime(100, dur);
+          if (total !== dom.durationTime.textContent) dom.durationTime.textContent = total;
         }
       }
       if (changes.mf_error && changes.mf_error.newValue) {
