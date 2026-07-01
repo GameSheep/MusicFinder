@@ -32,12 +32,30 @@ const HK_RADIOS = [
 ];
 
 /**
+ * Fetch all radio categories from Qingting FM API.
+ * @returns {Promise<Array<{id: number, title: string}>>}
+ */
+async function fetchRadioCategories() {
+  let res;
+  try { res = await fetch('https://rapi.qingting.fm/categories'); } catch (e) {}
+  if (!res || !res.ok) {
+    res = await fetch('http://rapi.qingting.fm/categories');
+  }
+  if (!res.ok) throw new Error(`Categories API returned ${res.status}`);
+  const data = await res.json();
+  const items = data.Data || data.data || [];
+  return Array.isArray(items) ? items.map(item => ({
+    id: item.id || item.category_id,
+    title: item.title || item.name
+  })) : [];
+}
+
+/**
  * Fetch radio stations for a region from Qingting FM API.
  * @param {number} regionId
  * @returns {Promise<Array>}
  */
 async function fetchRadioStations(regionId) {
-  // Try HTTPS first, fall back to HTTP (Qingting FM may not support HTTPS)
   let res;
   try { res = await fetch(`https://rapi.qingting.fm/categories/${regionId}/channels?with_total=true&page=1&pagesize=36`); } catch (e) {}
   if (!res || !res.ok) {

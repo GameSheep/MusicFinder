@@ -879,7 +879,7 @@
     const stationList = $('#radioStationList');
     const searchInput = $('#radioSearch');
     if (!regionBtns.length || !stationList) return;
-    if (typeof HK_RADIOS === 'undefined' || typeof RADIO_REGIONS === 'undefined') {
+    if (typeof HK_RADIOS === 'undefined') {
       console.warn('MusicFinder: radio.js data not loaded');
       stationList.innerHTML = '<li class="mf-empty-state"><p>Radio data not available</p></li>';
       return;
@@ -887,11 +887,13 @@
 
     let currentRegion = 'mainland';
     let mainlandStations = [];
+    let mainlandCategories = null; // fetched dynamically from Qingting FM
 
     regionBtns.forEach(btn => btn.addEventListener('click', () => {
       regionBtns.forEach(b => b.classList.remove('mf-region-btn--active'));
       btn.classList.add('mf-region-btn--active');
       currentRegion = btn.dataset.region;
+      mainlandStations = [];
       renderRadioContent();
     }));
 
@@ -952,7 +954,20 @@
 
       // Mainland — show region list or station list
       if (!mainlandStations.length) {
-        stationList.innerHTML = RADIO_REGIONS.data.map(r => `
+        // Show loading while fetching categories
+        if (!mainlandCategories) {
+          stationList.innerHTML = '<li class="mf-loading">Loading regions...</li>';
+          (async () => {
+            try {
+              mainlandCategories = await fetchRadioCategories();
+              renderRadioContent();
+            } catch (e) {
+              stationList.innerHTML = `<li class="mf-error">Failed: ${esc(e.message || 'Network error')}</li>`;
+            }
+          })();
+          return;
+        }
+        stationList.innerHTML = mainlandCategories.map(r => `
           <li class="mf-station-item mf-region-item" data-region="${r.id}">
             <span class="mf-station-title">${esc(r.title)}</span>
           </li>
