@@ -117,8 +117,10 @@
   let playId = 0;
   function safePlay(notifyExtra) {
     const id = ++playId;
+    // Preserve bili page state unless caller overrides (seekTo etc. must not reset pager)
+    const extra = { mf_bili_page: biliCurrentPage, mf_bili_total: biliPages.length, ...notifyExtra };
     audio.play().then(() => {
-      if (id === playId) notifyPlayState(true, notifyExtra);
+      if (id === playId) notifyPlayState(true, extra);
     }).catch(e => {
       if (e.name !== 'AbortError') console.warn('MusicFinder: play failed', e.message);
     });
