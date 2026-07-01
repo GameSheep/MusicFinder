@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>MusicFinder Options</title>
+<link rel="stylesheet" href="css/options.css">
+</head>
+<body>
+<div class="mf-options">
+  <h2>MusicFinder</h2>
+
+  <div class="mf-opt">
+    <label>Theme Color</label>
+    <input type="color" id="themeColor">
+  </div>
+
+  <div class="mf-opt">
+    <label>Default Home Mode</label>
+    <label class="mf-radio"><input type="radio" name="homeMode" value="lyric"> Lyric Mode</label>
+    <label class="mf-radio"><input type="radio" name="homeMode" value="search"> Search Mode</label>
+  </div>
+
+  <div class="mf-opt">
+    <label>MV Source</label>
+    <label class="mf-radio"><input type="radio" name="mvSource" value="youtube"> YouTube</label>
+    <label class="mf-radio"><input type="radio" name="mvSource" value="bilibili"> Bilibili</label>
+  </div>
+
+  <div class="mf-opt">
+    <label>Playlist</label>
+    <div class="mf-btnrow">
+      <button id="importBtn">Import .mf</button>
+      <button id="exportBtn">Export</button>
+      <button id="resetBtn">Reset to Backup</button>
+    </div>
+  </div>
+
+  <button id="saveBtn" class="mf-primary">Save</button>
+  <span id="mfStatus"></span>
+</div>
+<script src="js/options.js"></script>
+</body>
+</html>

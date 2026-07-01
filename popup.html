@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=320, initial-scale=1.0">
+  <title>MusicFinder</title>
+  <link rel="stylesheet" href="css/popup.css">
+</head>
+<body>
+
+<div class="mf-app">
+
+  <!-- ===== Slide Navigation ===== -->
+  <nav class="mf-nav">
+    <button class="mf-nav-btn mf-nav-btn--active" data-slide="1">Music</button>
+    <button class="mf-nav-btn" data-slide="0">Radio</button>
+    <button class="mf-nav-btn" data-slide="2">Podcast</button>
+  </nav>
+
+  <!-- ===== Carousel ===== -->
+  <div class="mf-carousel" id="mfCarousel">
+
+    <!-- ==================== Slide 1: Radio ==================== -->
+    <section class="mf-slide mf-slide--radio" id="slideRadio">
+      <div class="mf-radio-regions">
+        <button class="mf-region-btn mf-region-btn--active" data-region="mainland">Mainland</button>
+        <button class="mf-region-btn" data-region="hk">HK</button>
+        <button class="mf-region-btn" data-region="custom">Custom</button>
+      </div>
+      <div class="mf-radio-search">
+        <input type="search" class="mf-input" id="radioSearch" placeholder="Search stations...">
+      </div>
+      <ul class="mf-station-list" id="radioStationList">
+        <!-- populated by JS -->
+      </ul>
+    </section>
+
+    <!-- ==================== Slide 2: Music (default, active) ==================== -->
+    <section class="mf-slide mf-slide--music mf-slide--active" id="slideMusic">
+
+      <!-- Search bar -->
+      <div class="mf-search-wrap">
+        <div class="mf-search-bar">
+          <input type="search" class="mf-input mf-search-input" id="musicSearch" placeholder="Search songs, artists, albums..." autocomplete="off">
+          <button class="mf-sort-btn" id="sortBtn" title="Sort by duration">⇅</button>
+        </div>
+        <ul class="mf-history-dropdown" id="searchHistory" hidden></ul>
+      </div>
+
+      <!-- Platform tabs -->
+      <nav class="mf-tabs" id="platformTabs">
+        <button class="mf-tab mf-tab--active" data-platform="netease">NetEase</button>
+        <button class="mf-tab" data-platform="qq">QQ</button>
+        <button class="mf-tab" data-platform="bilibili">Bilibili</button>
+        <button class="mf-tab" data-platform="favorites">Favorites</button>
+        <button class="mf-tab" data-platform="sponsor">赞助</button>
+        <button class="mf-tab" data-platform="local">Local</button>
+      </nav>
+
+      <!-- Results list -->
+      <div class="mf-results" id="musicResults">
+        <ul class="mf-result-list" id="resultList">
+          <!-- populated by JS -->
+        </ul>
+        <div class="mf-empty-state" id="resultsEmpty">
+          <p>Search for music across platforms</p>
+        </div>
+      </div>
+
+      <!-- Bilibili page navigation (shown only on bilibili tab) -->
+      <div class="mf-bilibili-pager" id="bilibiliPager" hidden>
+        <button class="mf-pager-btn" id="biliPrev" disabled>&lsaquo;</button>
+        <div class="mf-pager-info-wrap">
+          <span class="mf-pager-info" id="biliPageInfo">1 / 1</span>
+          <div class="mf-pager-title" id="biliPageTitle"></div>
+        </div>
+        <button class="mf-pager-btn" id="biliNext" disabled>&rsaquo;</button>
+      </div>
+
+      <!-- Lyrics display -->
+      <div class="mf-lyrics" id="lyricsPanel">
+        <div class="mf-lyrics-header">
+          <span class="mf-lyrics-title">Lyrics</span>
+          <button class="mf-lyrics-toggle" id="lyricsToggle" type="button" aria-label="Toggle lyrics">&minus;</button>
+        </div>
+        <div class="mf-lyrics-body" id="lyricsBody">
+          <p class="mf-lyrics-line mf-lyrics-line--active">--</p>
+        </div>
+      </div>
+
+      <!-- Player footer -->
+      <footer class="mf-player-bar">
+        <div class="mf-player-info" id="playerInfo">未在播放</div>
+        <div class="mf-player-progress">
+          <span class="mf-player-time" id="currentTime">0:00</span>
+          <input type="range" class="mf-progress-slider" id="progressBar" min="0" max="100" value="0" step="0.1">
+          <span class="mf-player-time" id="durationTime">0:00</span>
+        </div>
+        <div class="mf-player-controls">
+          <button class="mf-ctrl-btn" id="btnLoop" type="button" aria-label="Loop mode" data-mode="none"></button>
+          <button class="mf-ctrl-btn" id="btnPrev" type="button" aria-label="Previous">&laquo;</button>
+          <button class="mf-ctrl-btn mf-ctrl-btn--play" id="btnPlay" type="button" aria-label="Play/Pause">&#9654;</button>
+          <button class="mf-ctrl-btn" id="btnNext" type="button" aria-label="Next">&raquo;</button>
+          <button class="mf-ctrl-btn mf-ctrl-btn--fav" id="btnFavorite" type="button" aria-label="Favorite">&#9825;</button>
+        </div>
+        <div class="mf-player-volume">
+          <button class="mf-ctrl-btn mf-volume-icon" id="btnMute" type="button" aria-label="Mute">&#x1F50A;</button>
+          <input type="range" class="mf-volume-slider" id="volumeSlider" min="0" max="100" value="80" step="1">
+        </div>
+      </footer>
+    </section>
+
+    <!-- ==================== Slide 3: Podcast ==================== -->
+    <section class="mf-slide mf-slide--podcast" id="slidePodcast">
+      <div class="mf-podcast-search">
+        <input type="search" class="mf-input" id="podcastSearch" placeholder="Search podcasts...">
+      </div>
+      <div class="mf-podcast-grid" id="podcastAlbumGrid">
+        <!-- populated by JS -->
+      </div>
+      <div class="mf-podcast-section-header">
+        <span>Episodes</span>
+      </div>
+      <ul class="mf-episode-list" id="podcastEpisodeList">
+        <!-- populated by JS -->
+      </ul>
+    </section>
+
+  </div><!-- /carousel -->
+
+  <!-- ===== Modal: Time-Range Clip Selector ===== -->
+  <div class="mf-modal-overlay" id="clipModal" hidden>
+    <div class="mf-modal">
+      <div class="mf-modal-header">
+        <h3 class="mf-modal-title">Clip Time Range</h3>
+        <button class="mf-modal-close" id="clipModalClose" type="button" aria-label="Close">&times;</button>
+      </div>
+      <div class="mf-modal-body">
+        <div class="mf-clip-range">
+          <label class="mf-clip-label">Start: <span id="clipStartLabel">0:00</span></label>
+          <input type="range" class="mf-range-slider" id="clipStartSlider" min="0" max="100" value="0" step="0.1">
+          <label class="mf-clip-label">End: <span id="clipEndLabel">0:00</span></label>
+          <input type="range" class="mf-range-slider" id="clipEndSlider" min="0" max="100" value="100" step="0.1">
+        </div>
+        <div class="mf-clip-lyrics" id="clipLyricsList">
+          <!-- lyrics lines with checkboxes / highlights for the selected range -->
+        </div>
+      </div>
+      <div class="mf-modal-footer">
+        <button class="mf-btn mf-btn--primary" id="clipConfirm">Confirm</button>
+        <button class="mf-btn mf-btn--secondary" id="clipCancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Toast / Alert ===== -->
+  <div class="mf-alert" id="alertBox" role="status" aria-live="polite"></div>
+
+</div><!-- /mf-app -->
+
+<!-- ===== Scripts ===== -->
+<!-- Crypto / utility libs (off-thread loading: already loaded in offscreen, needed here for API calls) -->
+<script src="js/lib/aes.js"></script>
+<script src="js/lib/bigint.js"></script>
+<script src="js/lib/md5.js"></script>
+
+<!-- Platform API modules -->
+<script src="js/api/netease.js"></script>
+<script src="js/api/qq.js"></script>
+<script src="js/api/bilibili.js"></script>
+<script src="js/api/youtube.js"></script>
+<script src="js/api/xiami.js"></script>
+<script src="js/api/migu.js"></script>
+<script src="js/api/itunes.js"></script>
+
+<!-- Support modules -->
+<script src="js/utils.js"></script>
+<script src="js/lyrics-data.js"></script>
+<script src="js/radio.js"></script>
+<script src="js/podcast.js"></script>
+<script src="js/lib/sortable.js"></script>
+
+<!-- App logic -->
+<script src="js/popup.js"></script>
+
+</body>
+</html>

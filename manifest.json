@@ -1,0 +1,67 @@
+{
+  "manifest_version": 3,
+  "name": "MusicFinder",
+  "short_name": "MF",
+  "version": "1.0.0",
+  "description": "Multi-platform music search & preview — NetEase, QQ, Bilibili, YouTube and more",
+  "icons": {
+    "16": "img/icon128.png",
+    "48": "img/icon128.png",
+    "128": "img/icon128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "MusicFinder",
+    "default_icon": "img/icon128.png"
+  },
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "commands": {
+    "base": {
+      "description": "Play / Pause",
+      "suggested_key": {
+        "default": "Alt+Shift+Z",
+        "mac": "Alt+Shift+Z"
+      }
+    }
+  },
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset_1",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  },
+  "side_panel": {
+    "default_path": "side-panel.html"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  },
+  "permissions": [
+    "offscreen",
+    "activeTab",
+    "storage",
+    "cookies",
+    "declarativeNetRequest",
+    "sidePanel"
+  ],
+  "host_permissions": [
+    "*://music.163.com/*",
+    "*://*.xiami.com/*",
+    "*://*.qq.com/*",
+    "*://*.migu.cn/*",
+    "*://itunes.apple.com/*",
+    "*://api.bilibili.com/*",
+    "*://*.bilivideo.com/*",
+    "*://www.googleapis.com/youtube/v3/*",
+    "*://rapi.qingting.fm/*",
+    "*://lhttp.qingting.fm/*",
+    "http://*/",
+    "https://*/"
+  ]
+}
