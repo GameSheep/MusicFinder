@@ -180,6 +180,10 @@
     bindEvents();
     updatePlayUI();
     updateFavUI();
+    // Init podcast tab (event bindings, restore state)
+    if (typeof Podcast !== 'undefined') Podcast.init();
+    // Init radio tab
+    initRadio();
     // Connect to player for live progress/duration after popup reopen
     getPlayerPort().catch(() => {});
   }
@@ -866,6 +870,110 @@
     state.isFavorited = isFav;
     dom.btnFavorite.textContent = isFav ? '♥' : '♡';
     dom.btnFavorite.classList.toggle('mf-ctrl-btn--active', isFav);
+  }
+
+  // ==================== Radio ====================
+
+  function initRadio() {
+    const regionBtns = $$('.mf-region-btn');
+    const stationList = $('#radioStationList');
+    const searchInput = $('#radioSearch');
+    if (!regionBtns.length || !stationList) return;
+
+    let currentRegion = 'mainland';
+    let mainlandStations = [];
+
+    regionBtns.forEach(btn => btn.addEventListener('click', () => {
+      regionBtns.forEach(b => b.classList.remove('mf-region-btn--active'));
+      btn.classList.add('mf-region-btn--active');
+      currentRegion = btn.dataset.region;
+      renderRadioContent();
+    }));
+
+    stationList.addEventListener('click', async e => {
+      const btn = e.target.closest('.mf-radio-play-btn');
+      if (!btn) return;
+      let url = btn.dataset.url;
+      let name = btn.dataset.name;
+      // Mainland stations: resolve stream URL from station ID
+      if (currentRegion === 'mainland' && btn.dataset.sid) {
+        try {
+          btn.textContent = '⏳';
+          btn.disabled = true;
+          url = await fetchRadioStreamUrl(btn.dataset.sid);
+          btn.textContent = '▶';
+          btn.disabled = false;
+        } catch (err) {
+          btn.textContent = '⚠';
+          btn.disabled = true;
+          setTimeout(() => { btn.textContent = '▶'; btn.disabled = false; }, 2000);
+          return;
+        }
+      }
+      sendToPlayer({ type: 'radio', url, name });
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener('input', () => renderRadioContent());
+    }
+
+    async function renderRadioContent() {
+      const filter = (searchInput?.value || '').trim().toLowerCase();
+
+      if (currentRegion === 'hk') {
+        const filtered = HK_RADIOS.filter(r => !filter || r.title.toLowerCase().includes(filter) || r.desc.toLowerCase().includes(filter));
+        stationList.innerHTML = filtered.map(r => `
+          <li class="mf-station-item">
+            <div class="mf-station-info">
+              <span class="mf-station-title">${esc(r.title)}</span>
+              <span class="mf-station-tags">${esc(r.desc)}</span>
+            </div>
+            <button class="mf-action-btn mf-radio-play-btn" data-url="${esc(r.address)}" data-name="${esc(r.title)}">▶</button>
+          </li>
+        `).join('');
+        return;
+      }
+
+      if (currentRegion === 'custom') {
+        stationList.innerHTML = '<li class="mf-empty-state"><p>Enter a stream URL to play</p></li>';
+        return;
+      }
+
+      // Mainland — show region list or station list
+      if (!mainlandStations.length) {
+        stationList.innerHTML = RADIO_REGIONS.data.map(r => `
+          <li class="mf-station-item mf-region-item" data-region="${r.id}">
+            <span class="mf-station-title">${esc(r.title)}</span>
+          </li>
+        `).join('');
+        stationList.querySelectorAll('.mf-region-item').forEach(item => {
+          item.addEventListener('click', async () => {
+            const id = +item.dataset.region;
+            stationList.innerHTML = '<li class="mf-loading">Loading stations...</li>';
+            try {
+              mainlandStations = await fetchRadioStations(id);
+              renderRadioContent();
+            } catch (e) {
+              stationList.innerHTML = '<li class="mf-error">Failed to load stations</li>';
+            }
+          });
+        });
+      } else {
+        const filtered = mainlandStations.filter(s => !filter || s.title.toLowerCase().includes(filter));
+        stationList.innerHTML = filtered.length ? filtered.map(s => `
+          <li class="mf-station-item">
+            <div class="mf-station-info">
+              <span class="mf-station-title">${esc(s.title)}</span>
+              <span class="mf-station-tags">${esc(s.nowPlaying || '-')}</span>
+            </div>
+            <button class="mf-action-btn mf-radio-play-btn" data-sid="${esc(s.id)}" data-name="${esc(s.title)}">▶</button>
+          </li>
+        `).join('') : '<li class="mf-empty-state"><p>No stations found</p></li>';
+      }
+    }
+
+    // Initial render
+    renderRadioContent();
   }
 
   // ==================== Clip Modal ====================

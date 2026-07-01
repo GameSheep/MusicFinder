@@ -46,3 +46,19 @@ async function fetchRadioStations(regionId) {
     nowPlaying: (item.nowplaying && item.nowplaying.title) ? item.nowplaying.title : '-'
   })) : [];
 }
+
+/**
+ * Resolve Qingting FM station ID to a live stream URL.
+ * @param {number|string} stationId — Qingting content_id
+ * @returns {Promise<string>} stream URL
+ */
+async function fetchRadioStreamUrl(stationId) {
+  const url = `http://lhttp.qingting.fm/live/${stationId}/64k.mp3`;
+  const res = await fetch(url, { method: 'HEAD' });
+  if (res.ok) return url;
+  // Fallback: try 128k
+  const alt = `http://lhttp.qingting.fm/live/${stationId}/128k.mp3`;
+  const res2 = await fetch(alt, { method: 'HEAD' });
+  if (res2.ok) return alt;
+  throw new Error('Cannot resolve stream URL for station ' + stationId);
+}
