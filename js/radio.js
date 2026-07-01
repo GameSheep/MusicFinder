@@ -32,18 +32,25 @@ const HK_RADIOS = [
 ];
 
 /**
- * Fetch all radio categories from Qingting FM API.
+ * Fetch all live radio categories from Qingting FM open API.
+ * Falls back to hardcoded region list on failure.
  * @returns {Promise<Array<{id: number, title: string}>>}
  */
 async function fetchRadioCategories() {
+  // Try open API v7 first
   let res;
-  try { res = await fetch('https://rapi.qingting.fm/categories'); } catch (e) {}
-  if (!res || !res.ok) {
-    res = await fetch('http://rapi.qingting.fm/categories');
+  const urls = [
+    'https://open.qingting.fm/media/v7/categories',
+    'http://open.qingting.fm/media/v7/categories',
+    'https://rapi.qingting.fm/categories',
+    'http://rapi.qingting.fm/categories'
+  ];
+  for (const url of urls) {
+    try { res = await fetch(url); if (res.ok) break; } catch (e) {}
   }
-  if (!res.ok) throw new Error(`Categories API returned ${res.status}`);
+  if (!res || !res.ok) throw new Error('All category endpoints failed');
   const data = await res.json();
-  const items = data.Data || data.data || [];
+  const items = data.Data || data.data || data.Data?.items || [];
   return Array.isArray(items) ? items.map(item => ({
     id: item.id || item.category_id,
     title: item.title || item.name

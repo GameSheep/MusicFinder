@@ -954,16 +954,17 @@
 
       // Mainland — show region list or station list
       if (!mainlandStations.length) {
-        // Show loading while fetching categories
+        // Fetch categories dynamically, fall back to hardcoded list
         if (!mainlandCategories) {
           stationList.innerHTML = '<li class="mf-loading">Loading regions...</li>';
           (async () => {
             try {
               mainlandCategories = await fetchRadioCategories();
-              renderRadioContent();
             } catch (e) {
-              stationList.innerHTML = `<li class="mf-error">Failed: ${esc(e.message || 'Network error')}</li>`;
+              console.warn('MusicFinder: dynamic categories failed, using fallback', e.message);
+              mainlandCategories = (typeof RADIO_REGIONS !== 'undefined' && RADIO_REGIONS.data) ? RADIO_REGIONS.data : [];
             }
+            renderRadioContent();
           })();
           return;
         }
@@ -975,11 +976,16 @@
         stationList.querySelectorAll('.mf-region-item').forEach(item => {
           item.addEventListener('click', async () => {
             const id = +item.dataset.region;
+            const title = item.querySelector('.mf-station-title')?.textContent || '';
+            console.log('MusicFinder radio: clicked', title, 'id=', id);
             stationList.innerHTML = '<li class="mf-loading">Loading stations...</li>';
             try {
-              mainlandStations = await fetchRadioStations(id);
+              const stations = await fetchRadioStations(id);
+              console.log('MusicFinder radio: got', stations.length, 'stations for', title, 'id=', id, stations.slice(0, 3));
+              mainlandStations = stations;
               renderRadioContent();
             } catch (e) {
+              console.error('MusicFinder radio: fetch failed for', title, 'id=', id, e);
               stationList.innerHTML = `<li class="mf-error">Failed: ${esc(e.message || 'Network error')}</li>`;
             }
           });
