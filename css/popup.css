@@ -1105,6 +1105,14 @@ body::before {
   text-overflow: ellipsis;
 }
 .mf-station-tags { font-size: 1rem; color: var(--text-dim); }
+.mf-back-item {
+  background: var(--bg-elev);
+  justify-content: center;
+  padding: 10px 12px;
+  font-weight: 500;
+  color: var(--accent);
+}
+.mf-back-item:hover { background: var(--bg-active); }
 
 /* ============================================================
    Modal

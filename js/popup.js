@@ -896,6 +896,12 @@
     }));
 
     stationList.addEventListener('click', async e => {
+      // Back button: return to region list
+      if (e.target.closest('.mf-back-item')) {
+        mainlandStations = [];
+        renderRadioContent();
+        return;
+      }
       const btn = e.target.closest('.mf-radio-play-btn');
       if (!btn) return;
       let url = btn.dataset.url;
@@ -965,7 +971,10 @@
         });
       } else {
         const filtered = mainlandStations.filter(s => !filter || s.title.toLowerCase().includes(filter));
-        stationList.innerHTML = filtered.length ? filtered.map(s => `
+        const backBtn = `<li class="mf-station-item mf-back-item">
+          <span class="mf-station-title">← Back to regions</span>
+        </li>`;
+        stationList.innerHTML = backBtn + (filtered.length ? filtered.map(s => `
           <li class="mf-station-item">
             <div class="mf-station-info">
               <span class="mf-station-title">${esc(s.title)}</span>
