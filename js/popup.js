@@ -965,7 +965,7 @@
               mainlandStations = await fetchRadioStations(id);
               renderRadioContent();
             } catch (e) {
-              stationList.innerHTML = '<li class="mf-error">Failed to load stations</li>';
+              stationList.innerHTML = `<li class="mf-error">Failed: ${esc(e.message || 'Network error')}</li>`;
             }
           });
         });

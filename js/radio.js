@@ -37,12 +37,18 @@ const HK_RADIOS = [
  * @returns {Promise<Array>}
  */
 async function fetchRadioStations(regionId) {
-  const url = `http://rapi.qingting.fm/categories/${regionId}/channels?with_total=true&page=1&pagesize=36`;
-  const res = await fetch(url);
+  // Try HTTPS first, fall back to HTTP (Qingting FM may not support HTTPS)
+  let res;
+  try { res = await fetch(`https://rapi.qingting.fm/categories/${regionId}/channels?with_total=true&page=1&pagesize=36`); } catch (e) {}
+  if (!res || !res.ok) {
+    res = await fetch(`http://rapi.qingting.fm/categories/${regionId}/channels?with_total=true&page=1&pagesize=36`);
+  }
+  if (!res.ok) throw new Error(`API returned ${res.status}`);
   const data = await res.json();
-  return (data.Data && data.Data.items) ? data.Data.items.map(item => ({
-    id: item.content_id,
-    title: item.title,
+  const items = data.Data?.items || data.data?.items || data.items || data.Data || [];
+  return Array.isArray(items) ? items.map(item => ({
+    id: item.content_id || item.id,
+    title: item.title || item.name,
     nowPlaying: (item.nowplaying && item.nowplaying.title) ? item.nowplaying.title : '-'
   })) : [];
 }
@@ -53,11 +59,11 @@ async function fetchRadioStations(regionId) {
  * @returns {Promise<string>} stream URL
  */
 async function fetchRadioStreamUrl(stationId) {
-  const url = `http://lhttp.qingting.fm/live/${stationId}/64k.mp3`;
+  const url = `https://lhttp.qingting.fm/live/${stationId}/64k.mp3`;
   const res = await fetch(url, { method: 'HEAD' });
   if (res.ok) return url;
   // Fallback: try 128k
-  const alt = `http://lhttp.qingting.fm/live/${stationId}/128k.mp3`;
+  const alt = `https://lhttp.qingting.fm/live/${stationId}/128k.mp3`;
   const res2 = await fetch(alt, { method: 'HEAD' });
   if (res2.ok) return alt;
   throw new Error('Cannot resolve stream URL for station ' + stationId);
