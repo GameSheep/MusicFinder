@@ -982,7 +982,7 @@
             </div>
             <button class="mf-action-btn mf-radio-play-btn" data-sid="${esc(s.id)}" data-name="${esc(s.title)}">▶</button>
           </li>
-        `).join('') : '<li class="mf-empty-state"><p>No stations found</p></li>';
+        `).join('') : '<li class="mf-empty-state"><p>No stations found</p></li>');
       }
     }
 
