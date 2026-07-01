@@ -954,20 +954,8 @@
 
       // Mainland — show region list or station list
       if (!mainlandStations.length) {
-        // Fetch categories dynamically, fall back to hardcoded list
-        if (!mainlandCategories) {
-          stationList.innerHTML = '<li class="mf-loading">Loading regions...</li>';
-          (async () => {
-            try {
-              mainlandCategories = await fetchRadioCategories();
-            } catch (e) {
-              console.warn('MusicFinder: dynamic categories failed, using fallback', e.message);
-              mainlandCategories = (typeof RADIO_REGIONS !== 'undefined' && RADIO_REGIONS.data) ? RADIO_REGIONS.data : [];
-            }
-            renderRadioContent();
-          })();
-          return;
-        }
+        // Use hardcoded region list (Qingting FM API now requires auth)
+        mainlandCategories = (typeof RADIO_REGIONS !== 'undefined' && RADIO_REGIONS.data) ? RADIO_REGIONS.data : [];
         stationList.innerHTML = mainlandCategories.map(r => `
           <li class="mf-station-item mf-region-item" data-region="${r.id}">
             <span class="mf-station-title">${esc(r.title)}</span>
