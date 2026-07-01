@@ -133,7 +133,6 @@
             dom.durationTime.textContent = Utils.formatTime(100, dur);
           }
         }
-        if (!msg.state) state.currentSong = null;
         updateBiliPager();
         updateFavUI();
       }
@@ -639,11 +638,9 @@
   }
 
   function togglePlay() {
-    if (state.isPlaying) {
-      sendToPlayer({ type: 'stop', data: {} });
-    } else if (state.currentSong) {
-      sendToPlayer(state.currentSong);
-    }
+    if (!state.currentSong && !state.isPlaying) return;
+    // Toggle pause/resume — player.togglePause handles both directions
+    sendToPlayer({ type: 'stop', data: {} });
   }
 
   function toggleLoop() {
@@ -816,7 +813,6 @@
           state.biliPageTitle = r.mf_bili_page_title || state.biliPageTitle;
         }
       }
-      if (!state.isPlaying) { state.currentSong = null; state.biliPageTitle = ''; }
       state.biliPage = r.mf_bili_page || 0;
       state.biliTotal = r.mf_bili_total || 0;
 
