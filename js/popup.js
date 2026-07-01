@@ -181,9 +181,9 @@
     updatePlayUI();
     updateFavUI();
     // Init podcast tab (event bindings, restore state)
-    if (typeof Podcast !== 'undefined') Podcast.init();
+    try { if (typeof Podcast !== 'undefined') Podcast.init(); } catch (e) { console.warn('Podcast init failed:', e); }
     // Init radio tab
-    initRadio();
+    try { initRadio(); } catch (e) { console.warn('Radio init failed:', e); }
     // Connect to player for live progress/duration after popup reopen
     getPlayerPort().catch(() => {});
   }
@@ -879,6 +879,11 @@
     const stationList = $('#radioStationList');
     const searchInput = $('#radioSearch');
     if (!regionBtns.length || !stationList) return;
+    if (typeof HK_RADIOS === 'undefined' || typeof RADIO_REGIONS === 'undefined') {
+      console.warn('MusicFinder: radio.js data not loaded');
+      stationList.innerHTML = '<li class="mf-empty-state"><p>Radio data not available</p></li>';
+      return;
+    }
 
     let currentRegion = 'mainland';
     let mainlandStations = [];
