@@ -114,24 +114,29 @@
 
   // --- Playback functions ---
 
+  let playId = 0;
+  function safePlay(notifyExtra) {
+    const id = ++playId;
+    audio.play().then(() => {
+      if (id === playId) notifyPlayState(true, notifyExtra);
+    }).catch(e => {
+      if (e.name !== 'AbortError') console.warn('MusicFinder: play failed', e.message);
+    });
+  }
+
   function playAudio(url) {
     ytFrame.src = '';
     source.src = url;
     audio.loop = isLoopMode;
     audio.load();
-    audio.play().catch(() => {});
+    safePlay();
   }
 
   function playBiliPage(url) {
     source.src = url;
     audio.loop = false;
     audio.load();
-    audio.play().then(() => {
-      notifyPlayState(true, {
-        mf_bili_page: biliCurrentPage,
-        mf_bili_total: biliPages.length
-      });
-    }).catch(() => {});
+    safePlay({ mf_bili_page: biliCurrentPage, mf_bili_total: biliPages.length });
 
     audio.onended = () => {
       if (biliCurrentPage + 1 < biliPages.length) {
@@ -227,7 +232,7 @@
       return;
     }
     if (audio.paused) {
-      audio.play().then(() => notifyPlayState(true));
+      safePlay();
     } else {
       audio.pause();
       notifyPlayState(false);
@@ -289,7 +294,7 @@
     source.src = url;
     audio.loop = false;
     audio.load();
-    audio.play().then(() => notifyPlayState(true));
+    safePlay();
   }
 
   function playPodcast(url, name, episodes, index) {
@@ -297,7 +302,7 @@
     source.src = url;
     audio.loop = false;
     audio.load();
-    audio.play().then(() => notifyPlayState(true));
+    safePlay();
     audio.onended = () => {
       if (episodes && index + 1 < episodes.length) {
         playPodcast(episodes[index + 1].url, episodes[index + 1].title, episodes, index + 1);
@@ -311,7 +316,7 @@
     source.src = url;
     audio.loop = true;
     audio.load();
-    audio.play().then(() => notifyPlayState(true));
+    safePlay();
   }
 
   function playLocal(url, name) {
@@ -319,13 +324,13 @@
     source.src = url;
     audio.loop = true;
     audio.load();
-    audio.play().then(() => notifyPlayState(true));
+    safePlay();
   }
 
   function seekTo(position) {
     if (audio.readyState >= 2) {
       audio.currentTime = audio.duration * position;
-      audio.play();
+      safePlay();
     }
   }
 

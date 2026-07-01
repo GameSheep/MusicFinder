@@ -975,18 +975,21 @@
         });
       } else {
         const filtered = mainlandStations.filter(s => !filter || s.title.toLowerCase().includes(filter));
-        const backBtn = `<li class="mf-station-item mf-back-item">
-          <span class="mf-station-title">← Back to regions</span>
-        </li>`;
-        stationList.innerHTML = backBtn + (filtered.length ? filtered.map(s => `
-          <li class="mf-station-item">
-            <div class="mf-station-info">
-              <span class="mf-station-title">${esc(s.title)}</span>
-              <span class="mf-station-tags">${esc(s.nowPlaying || '-')}</span>
-            </div>
-            <button class="mf-action-btn mf-radio-play-btn" data-sid="${esc(s.id)}" data-name="${esc(s.title)}">▶</button>
-          </li>
-        `).join('') : '<li class="mf-empty-state"><p>No stations found</p></li>');
+        var html = '<li class="mf-station-item mf-back-item"><span class="mf-station-title">← Back to regions</span></li>';
+        if (filtered.length) {
+          for (var i = 0; i < filtered.length; i++) {
+            var s = filtered[i];
+            html += '<li class="mf-station-item"><div class="mf-station-info">' +
+              '<span class="mf-station-title">' + esc(s.title) + '</span>' +
+              '<span class="mf-station-tags">' + esc(s.nowPlaying || '-') + '</span>' +
+              '</div>' +
+              '<button class="mf-action-btn mf-radio-play-btn" data-sid="' + esc(s.id) + '" data-name="' + esc(s.title) + '">▶</button>' +
+              '</li>';
+          }
+        } else {
+          html += '<li class="mf-empty-state"><p>No stations found</p></li>';
+        }
+        stationList.innerHTML = html;
       }
     }
 
