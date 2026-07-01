@@ -887,7 +887,6 @@
 
     let currentRegion = 'mainland';
     let mainlandStations = [];
-    let mainlandCategories = null; // fetched dynamically from Qingting FM
 
     regionBtns.forEach(btn => btn.addEventListener('click', () => {
       regionBtns.forEach(b => b.classList.remove('mf-region-btn--active'));
@@ -954,9 +953,8 @@
 
       // Mainland — show region list or station list
       if (!mainlandStations.length) {
-        // Use hardcoded region list (Qingting FM API now requires auth)
-        mainlandCategories = (typeof RADIO_REGIONS !== 'undefined' && RADIO_REGIONS.data) ? RADIO_REGIONS.data : [];
-        stationList.innerHTML = mainlandCategories.map(r => `
+        const regions = (typeof RADIO_REGIONS !== 'undefined' && RADIO_REGIONS.data) ? RADIO_REGIONS.data : [];
+        stationList.innerHTML = regions.map(r => `
           <li class="mf-station-item mf-region-item" data-region="${r.id}">
             <span class="mf-station-title">${esc(r.title)}</span>
           </li>
@@ -964,16 +962,11 @@
         stationList.querySelectorAll('.mf-region-item').forEach(item => {
           item.addEventListener('click', async () => {
             const id = +item.dataset.region;
-            const title = item.querySelector('.mf-station-title')?.textContent || '';
-            console.log('MusicFinder radio: clicked', title, 'id=', id);
             stationList.innerHTML = '<li class="mf-loading">Loading stations...</li>';
             try {
-              const stations = await fetchRadioStations(id);
-              console.log('MusicFinder radio: got', stations.length, 'stations for', title, 'id=', id, stations.slice(0, 3));
-              mainlandStations = stations;
+              mainlandStations = await fetchRadioStations(id);
               renderRadioContent();
             } catch (e) {
-              console.error('MusicFinder radio: fetch failed for', title, 'id=', id, e);
               stationList.innerHTML = `<li class="mf-error">Failed: ${esc(e.message || 'Network error')}</li>`;
             }
           });
