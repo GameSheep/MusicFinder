@@ -2,186 +2,186 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=320, initial-scale=1.0">
   <title>MusicFinder</title>
   <link rel="stylesheet" href="css/popup.css">
 </head>
 <body>
 
-<div class="mf-app">
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path class="f" d="M7 4.8v14.4a1 1 0 0 0 1.5.86l11.6-7.2a1 1 0 0 0 0-1.72L8.5 3.94A1 1 0 0 0 7 4.8z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><rect class="f" x="6" y="4.5" width="4" height="15" rx="1.2"/><rect class="f" x="14" y="4.5" width="4" height="15" rx="1.2"/></symbol>
+  <symbol id="i-prev" viewBox="0 0 24 24"><path class="f" d="M18.2 5.1v13.8a1 1 0 0 1-1.6.8L8 13a1.2 1.2 0 0 1 0-2l8.6-6.7a1 1 0 0 1 1.6.8z"/><path d="M5.5 5v14"/></symbol>
+  <symbol id="i-next" viewBox="0 0 24 24"><path class="f" d="M5.8 5.1v13.8a1 1 0 0 0 1.6.8L16 13a1.2 1.2 0 0 0 0-2L7.4 4.3a1 1 0 0 0-1.6.8z"/><path d="M18.5 5v14"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.5-1.46 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+  <symbol id="i-list-plus" viewBox="0 0 24 24"><path d="M11 12H3M16 6H3M16 18H3M18 9v6M21 12h-6"/></symbol>
+  <symbol id="i-queue" viewBox="0 0 24 24"><path d="M21 15V6M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM12 12H3M16 6H3M12 18H3"/></symbol>
+  <symbol id="i-order" viewBox="0 0 24 24"><path d="M3 6h13M3 12h9M3 18h9M17 10l4 4-4 4M21 14h-7"/></symbol>
+  <symbol id="i-repeat" viewBox="0 0 24 24"><path d="m17 2 4 4-4 4M3 11v-1a4 4 0 0 1 4-4h14M7 22l-4-4 4-4M21 13v1a4 4 0 0 1-4 4H3"/></symbol>
+  <symbol id="i-repeat-1" viewBox="0 0 24 24"><path d="m17 2 4 4-4 4M3 11v-1a4 4 0 0 1 4-4h14M7 22l-4-4 4-4M21 13v1a4 4 0 0 1-4 4H3M11 10h1.5v5"/></symbol>
+  <symbol id="i-shuffle" viewBox="0 0 24 24"><path d="m18 14 4 4-4 4M18 2l4 4-4 4M2 18h2a4 4 0 0 0 3.3-1.7l5.4-8.6A4 4 0 0 1 16 6h6M2 6h2a4 4 0 0 1 3.4 1.9M22 18h-6a4 4 0 0 1-3.3-1.8l-.4-.5"/></symbol>
+  <symbol id="i-volume" viewBox="0 0 24 24"><path d="M11 4.7a.7.7 0 0 0-1.2-.5L6.4 7.6A2 2 0 0 1 5 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2a2 2 0 0 1 1.4.6l3.4 3.4a.7.7 0 0 0 1.2-.5zM16 9a5 5 0 0 1 0 6M19.4 18.4a9 9 0 0 0 0-12.8"/></symbol>
+  <symbol id="i-volume-x" viewBox="0 0 24 24"><path d="M11 4.7a.7.7 0 0 0-1.2-.5L6.4 7.6A2 2 0 0 1 5 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2a2 2 0 0 1 1.4.6l3.4 3.4a.7.7 0 0 0 1.2-.5zM22 9l-6 6M16 9l6 6"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M20 7h-9M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></symbol>
+  <symbol id="i-sort" viewBox="0 0 24 24"><path d="m21 16-4 4-4-4M17 20V4M3 8l4-4 4 4M7 4v16"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></symbol>
+  <symbol id="i-panel" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M15 3v18"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></symbol>
+  <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
+  <symbol id="i-grip" viewBox="0 0 24 24"><circle class="f" cx="9" cy="6" r="1.4"/><circle class="f" cx="15" cy="6" r="1.4"/><circle class="f" cx="9" cy="12" r="1.4"/><circle class="f" cx="15" cy="12" r="1.4"/><circle class="f" cx="9" cy="18" r="1.4"/><circle class="f" cx="15" cy="18" r="1.4"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+</svg>
 
-  <!-- ===== Slide Navigation ===== -->
-  <nav class="mf-nav">
-    <button class="mf-nav-btn mf-nav-btn--active" data-slide="1">Music</button>
-    <button class="mf-nav-btn" data-slide="0">Radio</button>
-    <button class="mf-nav-btn" data-slide="2">Podcast</button>
-  </nav>
+<div class="app" id="app">
 
-  <!-- ===== Carousel ===== -->
-  <div class="mf-carousel" id="mfCarousel">
+  <header class="top">
+    <div class="brand"><img src="img/icon128.png" alt=""><span>MusicFinder</span></div>
+    <nav class="seg" id="viewNav" role="tablist" aria-label="模块">
+      <button type="button" role="tab" data-view="music" class="is-on">音乐</button>
+      <button type="button" role="tab" data-view="radio">电台</button>
+      <button type="button" role="tab" data-view="podcast">播客</button>
+    </nav>
+    <button type="button" class="ibtn" id="btnOptions" title="设置"><svg class="i"><use href="#i-settings"/></svg></button>
+  </header>
 
-    <!-- ==================== Slide 1: Radio ==================== -->
-    <section class="mf-slide mf-slide--radio" id="slideRadio">
-      <div class="mf-radio-regions">
-        <button class="mf-region-btn mf-region-btn--active" data-region="mainland">Mainland</button>
-        <button class="mf-region-btn" data-region="hk">HK</button>
-        <button class="mf-region-btn" data-region="custom">Custom</button>
+  <main class="views">
+
+    <!-- ========== Music ========== -->
+    <section class="view is-on" data-view="music">
+      <div class="search">
+        <form class="search-box" id="searchForm" autocomplete="off">
+          <svg class="i"><use href="#i-search"/></svg>
+          <input id="q" type="search" placeholder="搜索歌曲、歌手、专辑" spellcheck="false" enterkeyhint="search" aria-label="搜索">
+          <div class="kind" id="kindToggle" hidden></div>
+        </form>
+        <div class="history" id="history" hidden></div>
       </div>
-      <div class="mf-radio-search">
-        <input type="search" class="mf-input" id="radioSearch" placeholder="Search stations...">
+      <div class="chips" id="sourceChips" role="tablist" aria-label="平台"></div>
+      <div class="pane-head" id="musicHead"></div>
+      <div class="scroller" id="musicScroller">
+        <ul class="list" id="musicList"></ul>
+        <div class="list-foot" id="musicFoot"></div>
       </div>
-      <ul class="mf-station-list" id="radioStationList">
-        <!-- populated by JS -->
-      </ul>
     </section>
 
-    <!-- ==================== Slide 2: Music (default, active) ==================== -->
-    <section class="mf-slide mf-slide--music mf-slide--active" id="slideMusic">
-
-      <!-- Search bar -->
-      <div class="mf-search-wrap">
-        <div class="mf-search-bar">
-          <input type="search" class="mf-input mf-search-input" id="musicSearch" placeholder="Search songs, artists, albums..." autocomplete="off">
-          <button class="mf-sort-btn" id="sortBtn" title="Sort by duration">⇅</button>
+    <!-- ========== Radio ========== -->
+    <section class="view" data-view="radio">
+      <div class="subbar">
+        <div class="seg seg-sm" id="radioTabs">
+          <button type="button" data-tab="mainland" class="is-on">内地</button>
+          <button type="button" data-tab="hk">港台</button>
+          <button type="button" data-tab="custom">自定义</button>
         </div>
-        <ul class="mf-history-dropdown" id="searchHistory" hidden></ul>
+        <input class="field" id="radioFilter" type="search" placeholder="筛选电台" aria-label="筛选电台">
       </div>
-
-      <!-- Platform tabs -->
-      <nav class="mf-tabs" id="platformTabs">
-        <button class="mf-tab mf-tab--active" data-platform="netease">NetEase</button>
-        <button class="mf-tab" data-platform="qq">QQ</button>
-        <button class="mf-tab" data-platform="bilibili">Bilibili</button>
-        <button class="mf-tab" data-platform="favorites">Favorites</button>
-        <button class="mf-tab" data-platform="sponsor">赞助</button>
-        <button class="mf-tab" data-platform="local">Local</button>
-      </nav>
-
-      <!-- Results list -->
-      <div class="mf-results" id="musicResults">
-        <ul class="mf-result-list" id="resultList">
-          <!-- populated by JS -->
-        </ul>
-        <div class="mf-empty-state" id="resultsEmpty">
-          <p>Search for music across platforms</p>
-        </div>
+      <div class="pane-head" id="radioHead"></div>
+      <div class="scroller" id="radioScroller">
+        <div id="radioBody"></div>
       </div>
-
-      <!-- Bilibili page navigation (shown only on bilibili tab) -->
-      <div class="mf-bilibili-pager" id="bilibiliPager" hidden>
-        <button class="mf-pager-btn" id="biliPrev" disabled>&lsaquo;</button>
-        <div class="mf-pager-info-wrap">
-          <span class="mf-pager-info" id="biliPageInfo">1 / 1</span>
-          <div class="mf-pager-title" id="biliPageTitle"></div>
-        </div>
-        <button class="mf-pager-btn" id="biliNext" disabled>&rsaquo;</button>
-      </div>
-
-      <!-- Lyrics display -->
-      <div class="mf-lyrics" id="lyricsPanel">
-        <div class="mf-lyrics-header">
-          <span class="mf-lyrics-title">Lyrics</span>
-          <button class="mf-lyrics-toggle" id="lyricsToggle" type="button" aria-label="Toggle lyrics">&minus;</button>
-        </div>
-        <div class="mf-lyrics-body" id="lyricsBody">
-          <p class="mf-lyrics-line mf-lyrics-line--active">--</p>
-        </div>
-      </div>
-
-      <!-- Player footer -->
-      <footer class="mf-player-bar">
-        <div class="mf-player-info" id="playerInfo">未在播放</div>
-        <div class="mf-player-progress">
-          <span class="mf-player-time" id="currentTime">0:00</span>
-          <input type="range" class="mf-progress-slider" id="progressBar" min="0" max="100" value="0" step="0.1">
-          <span class="mf-player-time" id="durationTime">0:00</span>
-        </div>
-        <div class="mf-player-controls">
-          <button class="mf-ctrl-btn" id="btnLoop" type="button" aria-label="Loop mode" data-mode="none"></button>
-          <button class="mf-ctrl-btn" id="btnPrev" type="button" aria-label="Previous">&laquo;</button>
-          <button class="mf-ctrl-btn mf-ctrl-btn--play" id="btnPlay" type="button" aria-label="Play/Pause">&#9654;</button>
-          <button class="mf-ctrl-btn" id="btnNext" type="button" aria-label="Next">&raquo;</button>
-          <button class="mf-ctrl-btn mf-ctrl-btn--fav" id="btnFavorite" type="button" aria-label="Favorite">&#9825;</button>
-        </div>
-        <div class="mf-player-volume">
-          <button class="mf-ctrl-btn mf-volume-icon" id="btnMute" type="button" aria-label="Mute">&#x1F50A;</button>
-          <input type="range" class="mf-volume-slider" id="volumeSlider" min="0" max="100" value="80" step="1">
-        </div>
-      </footer>
     </section>
 
-    <!-- ==================== Slide 3: Podcast ==================== -->
-    <section class="mf-slide mf-slide--podcast" id="slidePodcast">
-      <div class="mf-podcast-search">
-        <input type="search" class="mf-input" id="podcastSearch" placeholder="Search podcasts...">
+    <!-- ========== Podcast ========== -->
+    <section class="view" data-view="podcast">
+      <div class="search">
+        <form class="search-box" id="podcastForm" autocomplete="off">
+          <svg class="i"><use href="#i-search"/></svg>
+          <input id="podcastQ" type="search" placeholder="搜索播客节目" spellcheck="false" aria-label="搜索播客">
+        </form>
       </div>
-      <div class="mf-podcast-grid" id="podcastAlbumGrid">
-        <!-- populated by JS -->
+      <div class="pane-head" id="podcastHead"></div>
+      <div class="scroller" id="podcastScroller">
+        <div id="podcastBody"></div>
       </div>
-      <div class="mf-podcast-section-header">
-        <span>Episodes</span>
-      </div>
-      <ul class="mf-episode-list" id="podcastEpisodeList">
-        <!-- populated by JS -->
-      </ul>
     </section>
 
-  </div><!-- /carousel -->
+  </main>
 
-  <!-- ===== Modal: Time-Range Clip Selector ===== -->
-  <div class="mf-modal-overlay" id="clipModal" hidden>
-    <div class="mf-modal">
-      <div class="mf-modal-header">
-        <h3 class="mf-modal-title">Clip Time Range</h3>
-        <button class="mf-modal-close" id="clipModalClose" type="button" aria-label="Close">&times;</button>
+  <!-- ========== Mini player ========== -->
+  <footer class="mini" id="mini">
+    <div class="mini-progress"><div class="mini-progress-bar" id="miniBar"></div></div>
+    <button type="button" class="mini-main" id="miniOpen" title="打开播放页">
+      <div class="cover ph" id="miniCover"><svg class="i"><use href="#i-music"/></svg></div>
+      <div class="mini-meta">
+        <div class="mini-title" id="miniTitle">未在播放</div>
+        <div class="mini-sub" id="miniSub">搜一首歌开始吧</div>
       </div>
-      <div class="mf-modal-body">
-        <div class="mf-clip-range">
-          <label class="mf-clip-label">Start: <span id="clipStartLabel">0:00</span></label>
-          <input type="range" class="mf-range-slider" id="clipStartSlider" min="0" max="100" value="0" step="0.1">
-          <label class="mf-clip-label">End: <span id="clipEndLabel">0:00</span></label>
-          <input type="range" class="mf-range-slider" id="clipEndSlider" min="0" max="100" value="100" step="0.1">
-        </div>
-        <div class="mf-clip-lyrics" id="clipLyricsList">
-          <!-- lyrics lines with checkboxes / highlights for the selected range -->
-        </div>
+    </button>
+    <div class="mini-ctrl">
+      <button type="button" class="ibtn" id="miniPrev" title="上一首"><svg class="i"><use href="#i-prev"/></svg></button>
+      <button type="button" class="ibtn play" id="miniPlay" title="播放 / 暂停 (空格)"><svg class="i"><use href="#i-play"/></svg></button>
+      <button type="button" class="ibtn" id="miniNext" title="下一首"><svg class="i"><use href="#i-next"/></svg></button>
+    </div>
+  </footer>
+
+  <!-- ========== Now playing sheet ========== -->
+  <section class="sheet" id="sheet" aria-hidden="true" aria-label="正在播放">
+    <div class="sheet-bg" id="sheetBg"></div>
+    <header class="sheet-top">
+      <button type="button" class="ibtn" id="sheetClose" title="收起 (Esc)"><svg class="i"><use href="#i-chevron-down"/></svg></button>
+      <div class="sheet-src" id="sheetSrc">正在播放</div>
+      <button type="button" class="ibtn" id="btnSidePanel" title="在侧边栏显示歌词"><svg class="i"><use href="#i-panel"/></svg></button>
+      <button type="button" class="ibtn" id="btnOpenPage" title="在平台中打开"><svg class="i"><use href="#i-external"/></svg></button>
+    </header>
+
+    <div class="np-info">
+      <div class="cover xl ph" id="npCover"><svg class="i"><use href="#i-music"/></svg></div>
+      <div class="np-meta">
+        <div class="np-title" id="npTitle">未在播放</div>
+        <div class="np-artist" id="npArtist"></div>
+        <div class="np-tags" id="npTags"></div>
       </div>
-      <div class="mf-modal-footer">
-        <button class="mf-btn mf-btn--primary" id="clipConfirm">Confirm</button>
-        <button class="mf-btn mf-btn--secondary" id="clipCancel">Cancel</button>
+      <button type="button" class="ibtn fav" id="npFav" title="收藏"><svg class="i"><use href="#i-heart"/></svg></button>
+    </div>
+
+    <nav class="tabs" id="npTabs">
+      <button type="button" data-tab="lyrics" class="is-on">歌词</button>
+      <button type="button" data-tab="queue">播放列表 <span class="count" id="queueCount"></span></button>
+      <button type="button" data-tab="pages" id="tabPages" hidden>分P <span class="count" id="pageCount"></span></button>
+    </nav>
+
+    <div class="np-body">
+      <div class="np-panel is-on" data-tab="lyrics"><div class="lyrics" id="lyrics"></div></div>
+      <div class="np-panel" data-tab="queue">
+        <div class="np-panel-head"><span id="queueInfo"></span><button type="button" class="btn ghost sm" id="queueClear">清空其他</button></div>
+        <ul class="list compact" id="queueList"></ul>
+      </div>
+      <div class="np-panel" data-tab="pages"><ul class="list compact" id="pageList"></ul></div>
+    </div>
+
+    <div class="np-progress">
+      <span class="time" id="npCur">0:00</span>
+      <input type="range" class="range" id="npSeek" min="0" max="1000" value="0" step="1" aria-label="进度">
+      <span class="time" id="npDur">0:00</span>
+    </div>
+
+    <div class="np-ctrl">
+      <div class="np-ctrl-side">
+        <button type="button" class="ibtn" id="npMode" title="顺序播放"><svg class="i"><use href="#i-order"/></svg></button>
+      </div>
+      <div class="np-ctrl-main">
+        <button type="button" class="ibtn lg" id="npPrev" title="上一首"><svg class="i"><use href="#i-prev"/></svg></button>
+        <button type="button" class="ibtn xl play" id="npPlay" title="播放 / 暂停 (空格)"><svg class="i"><use href="#i-play"/></svg></button>
+        <button type="button" class="ibtn lg" id="npNext" title="下一首"><svg class="i"><use href="#i-next"/></svg></button>
+      </div>
+      <div class="np-ctrl-side vol">
+        <button type="button" class="ibtn" id="npMute" title="静音"><svg class="i"><use href="#i-volume"/></svg></button>
+        <input type="range" class="range" id="npVol" min="0" max="100" value="80" aria-label="音量">
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- ===== Toast / Alert ===== -->
-  <div class="mf-alert" id="alertBox" role="status" aria-live="polite"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</div>
 
-</div><!-- /mf-app -->
-
-<!-- ===== Scripts ===== -->
-<!-- Crypto / utility libs (off-thread loading: already loaded in offscreen, needed here for API calls) -->
-<script src="js/lib/aes.js"></script>
-<script src="js/lib/bigint.js"></script>
 <script src="js/lib/md5.js"></script>
-
-<!-- Platform API modules -->
-<script src="js/api/netease.js"></script>
-<script src="js/api/qq.js"></script>
-<script src="js/api/bilibili.js"></script>
-<script src="js/api/youtube.js"></script>
-<script src="js/api/xiami.js"></script>
-<script src="js/api/migu.js"></script>
-<script src="js/api/itunes.js"></script>
-
-<!-- Support modules -->
-<script src="js/utils.js"></script>
-<script src="js/lyrics-data.js"></script>
-<script src="js/radio.js"></script>
-<script src="js/podcast.js"></script>
-<script src="js/lib/sortable.js"></script>
-
-<!-- App logic -->
-<script src="js/popup.js"></script>
-
+<script type="module" src="js/popup/main.js"></script>
 </body>
 </html>

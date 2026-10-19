@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<!-- Dev-only: renders popup.html outside the extension with an in-memory chrome.* stub. Serve the repo root over HTTP. -->
+<html><head><meta charset="utf-8"><style>body{margin:0;background:#333;display:grid;place-items:center;height:100vh}iframe{width:380px;height:600px;border:0}</style></head>
+<body><iframe id="f"></iframe>
+<script>
+const f = document.getElementById('f');
+const tracks = [
+  { source: 'netease', id: '1', name: '晴天', artists: ['周杰伦'], album: '叶惠美', duration: 269, cover: '' },
+  { source: 'qq', id: '2', name: '孤勇者', artists: ['陈奕迅'], album: '', duration: 256, cover: '', vip: true },
+  { source: 'bilibili', id: 'BV1', name: '一个很长很长很长很长很长很长很长的视频标题测试截断效果', artists: ['老番茄'], duration: 612, cover: '' },
+  { source: 'kuwo', id: '3', name: '稻香', artists: ['周杰伦'], duration: 223, cover: '' }
+];
+const mem = { local: { mf_favorites: tracks }, sync: {}, session: {} };
+const area = (n) => ({
+  async get(k) { if (k == null) return { ...mem[n] }; const ks = typeof k === 'string' ? [k] : Array.isArray(k) ? k : Object.keys(k); return Object.fromEntries(ks.filter((x) => x in mem[n]).map((x) => [x, mem[n][x]])); },
+  async set(o) { Object.assign(mem[n], o); }
+});
+const listeners = [];
+const state = { track: tracks[0], queue: tracks, index: 0, playing: true, loading: false, currentTime: 80, duration: 269, volume: .7, muted: false, mode: 'loop', page: 0, pages: null, embed: false, error: '' };
+const lyrics = { key: 'netease:1', loading: false, lines: Array.from({ length: 30 }, (_, i) => ({ t: i * 8, text: '第 ' + (i + 1) + ' 行歌词 刮风这天 我试过握着你手' })) };
+window.chromeStub = {
+  storage: { local: area('local'), sync: area('sync'), session: area('session'), onChanged: { addListener: (fn) => listeners.push(fn) } },
+  runtime: {
+    getContexts: async () => [{}],
+    sendMessage: async (m) => { console.log('cmd', m); return { ok: true }; },
+    onMessage: { addListener() {} },
+    connect() {
+      const ls = [];
+      setTimeout(() => { ls.forEach((fn) => { fn({ type: 'state', state }); fn({ type: 'lyrics', ...lyrics }); }); }, 50);
+      return { onMessage: { addListener: (fn) => ls.push(fn) }, onDisconnect: { addListener() {} }, postMessage() {} };
+    },
+    openOptionsPage() {}, lastError: null, getManifest: () => ({ version: '2.0.0' })
+  },
+  windows: { getCurrent: async () => ({ id: 1 }) },
+  tabs: { create: (o) => console.log('open', o) },
+  sidePanel: { open: async () => {} }
+};
+const page = new URLSearchParams(location.search).get('page') || 'popup.html';
+if (page !== 'popup.html') Object.assign(f.style, { width: '100vw', height: '100vh' });
+fetch('../' + page).then((r) => r.text()).then((html) => {
+  const base = new URL('../', location.href).href;
+  f.srcdoc = html.replace('<head>', `<head><base href="${base}"><script>Object.defineProperty(window,'chrome',{value:parent.chromeStub});<\/script>`);
+});
+</script>
+</body></html>

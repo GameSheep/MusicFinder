@@ -2,47 +2,35 @@
   {
     "id": 1,
     "priority": 1,
-    "action": {
-      "type": "modifyHeaders",
-      "requestHeaders": [
-        { "header": "Referer", "operation": "set", "value": "https://www.bilibili.com/" }
-      ]
-    },
-    "condition": {
-      "urlFilter": "*://api.bilibili.com/*",
-      "resourceTypes": ["xmlhttprequest"]
-    }
+    "action": { "type": "modifyHeaders", "requestHeaders": [{ "header": "Referer", "operation": "set", "value": "https://www.bilibili.com/" }] },
+    "condition": { "urlFilter": "||api.bilibili.com", "resourceTypes": ["xmlhttprequest"] }
   },
   {
     "id": 2,
     "priority": 1,
-    "action": {
-      "type": "modifyHeaders",
-      "requestHeaders": [
-        { "header": "Referer", "operation": "set", "value": "https://www.bilibili.com/" }
-      ]
-    },
-    "condition": {
-      "urlFilter": "*://*.bilivideo.com/*",
-      "resourceTypes": ["xmlhttprequest", "media"]
-    }
+    "action": { "type": "modifyHeaders", "requestHeaders": [{ "header": "Referer", "operation": "set", "value": "https://www.bilibili.com/" }] },
+    "condition": { "urlFilter": "||bilivideo.com", "resourceTypes": ["xmlhttprequest", "media"] }
   },
   {
     "id": 3,
     "priority": 1,
-    "action": {
-      "type": "modifyHeaders",
-      "requestHeaders": [
-        { "header": "Referer", "operation": "set", "value": "https://music.163.com/" }
-      ]
-    },
-    "condition": {
-      "urlFilter": "*://music.163.com/*",
-      "resourceTypes": ["xmlhttprequest"]
-    }
+    "action": { "type": "modifyHeaders", "requestHeaders": [{ "header": "Referer", "operation": "set", "value": "https://www.bilibili.com/" }] },
+    "condition": { "urlFilter": "||bilivideo.cn", "resourceTypes": ["xmlhttprequest", "media"] }
   },
   {
     "id": 4,
+    "priority": 1,
+    "action": { "type": "modifyHeaders", "requestHeaders": [{ "header": "Referer", "operation": "set", "value": "https://www.bilibili.com/" }] },
+    "condition": { "regexFilter": "^https?://upos-[^/]+\\.akamaized\\.net/", "resourceTypes": ["media"] }
+  },
+  {
+    "id": 5,
+    "priority": 1,
+    "action": { "type": "modifyHeaders", "requestHeaders": [{ "header": "Referer", "operation": "set", "value": "https://music.163.com/" }] },
+    "condition": { "urlFilter": "||music.163.com", "resourceTypes": ["xmlhttprequest", "media"] }
+  },
+  {
+    "id": 6,
     "priority": 1,
     "action": {
       "type": "modifyHeaders",
@@ -51,79 +39,30 @@
         { "header": "Origin", "operation": "set", "value": "https://y.qq.com" }
       ]
     },
-    "condition": {
-      "urlFilter": "*://c.y.qq.com/*",
-      "resourceTypes": ["xmlhttprequest"]
-    }
-  },
-  {
-    "id": 5,
-    "priority": 1,
-    "action": {
-      "type": "modifyHeaders",
-      "requestHeaders": [
-        { "header": "Referer", "operation": "set", "value": "https://y.qq.com/" }
-      ]
-    },
-    "condition": {
-      "urlFilter": "*://y.qq.com/*",
-      "resourceTypes": ["xmlhttprequest"]
-    }
-  },
-  {
-    "id": 6,
-    "priority": 1,
-    "action": {
-      "type": "modifyHeaders",
-      "requestHeaders": [
-        { "header": "Referer", "operation": "set", "value": "https://y.qq.com/" }
-      ]
-    },
-    "condition": {
-      "urlFilter": "*://qqmusic.qq.com/*",
-      "resourceTypes": ["xmlhttprequest"]
-    }
+    "condition": { "urlFilter": "||y.qq.com", "resourceTypes": ["xmlhttprequest"] }
   },
   {
     "id": 7,
     "priority": 1,
-    "action": {
-      "type": "modifyHeaders",
-      "requestHeaders": [
-        { "header": "Referer", "operation": "set", "value": "https://y.qq.com/" }
-      ]
-    },
-    "condition": {
-      "urlFilter": "*://music.qq.com/*",
-      "resourceTypes": ["xmlhttprequest"]
-    }
+    "action": { "type": "modifyHeaders", "requestHeaders": [{ "header": "Referer", "operation": "set", "value": "https://y.qq.com/" }] },
+    "condition": { "urlFilter": "||qqmusic.qq.com", "resourceTypes": ["xmlhttprequest", "media"] }
   },
   {
     "id": 8,
     "priority": 1,
-    "action": {
-      "type": "modifyHeaders",
-      "requestHeaders": [
-        { "header": "Referer", "operation": "set", "value": "https://y.qq.com/" }
-      ]
-    },
-    "condition": {
-      "urlFilter": "*://imgcache.qq.com/*",
-      "resourceTypes": ["xmlhttprequest"]
-    }
+    "action": { "type": "modifyHeaders", "requestHeaders": [{ "header": "Referer", "operation": "set", "value": "https://www.kuwo.cn/" }] },
+    "condition": { "urlFilter": "||kuwo.cn", "resourceTypes": ["xmlhttprequest", "media"] }
   },
   {
     "id": 9,
     "priority": 1,
-    "action": {
-      "type": "modifyHeaders",
-      "requestHeaders": [
-        { "header": "Referer", "operation": "set", "value": "https://music.migu.cn/v3/music/player/audio?from=migu" }
-      ]
-    },
-    "condition": {
-      "urlFilter": "*://*.migu.cn/*",
-      "resourceTypes": ["xmlhttprequest"]
-    }
+    "action": { "type": "modifyHeaders", "requestHeaders": [{ "header": "Referer", "operation": "set", "value": "https://www.kugou.com/" }] },
+    "condition": { "urlFilter": "||kugou.com", "resourceTypes": ["xmlhttprequest", "media"] }
+  },
+  {
+    "id": 10,
+    "priority": 1,
+    "action": { "type": "modifyHeaders", "requestHeaders": [{ "header": "Referer", "operation": "set", "value": "https://music.migu.cn/" }] },
+    "condition": { "urlFilter": "||migu.cn", "resourceTypes": ["xmlhttprequest", "media"] }
   }
 ]

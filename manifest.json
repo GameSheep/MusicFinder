@@ -2,8 +2,9 @@
   "manifest_version": 3,
   "name": "MusicFinder",
   "short_name": "MF",
-  "version": "1.0.0",
-  "description": "Multi-platform music search & preview — NetEase, QQ, Bilibili, YouTube and more",
+  "version": "2.0.0",
+  "description": "多平台音乐搜索与试听：网易云、QQ、酷我、酷狗、咪咕、B站（含UP主）、Audius、Apple Music、YouTube，外加电台与播客",
+  "minimum_chrome_version": "116",
   "icons": {
     "16": "img/icon128.png",
     "48": "img/icon128.png",
@@ -15,53 +16,42 @@
     "default_icon": "img/icon128.png"
   },
   "background": {
-    "service_worker": "service-worker.js"
+    "service_worker": "service-worker.js",
+    "type": "module"
   },
   "commands": {
-    "base": {
-      "description": "Play / Pause",
-      "suggested_key": {
-        "default": "Alt+Shift+Z",
-        "mac": "Alt+Shift+Z"
-      }
+    "toggle-play": {
+      "description": "播放 / 暂停",
+      "suggested_key": { "default": "Alt+Shift+Z", "mac": "Alt+Shift+Z" }
+    },
+    "next-track": {
+      "description": "下一首",
+      "suggested_key": { "default": "Alt+Shift+Right", "mac": "Alt+Shift+Right" }
+    },
+    "prev-track": {
+      "description": "上一首",
+      "suggested_key": { "default": "Alt+Shift+Left", "mac": "Alt+Shift+Left" }
     }
   },
   "declarative_net_request": {
-    "rule_resources": [
-      {
-        "id": "ruleset_1",
-        "enabled": true,
-        "path": "rules.json"
-      }
-    ]
+    "rule_resources": [{ "id": "ruleset_1", "enabled": true, "path": "rules.json" }]
   },
   "side_panel": {
     "default_path": "side-panel.html"
   },
   "options_ui": {
     "page": "options.html",
-    "open_in_tab": false
+    "open_in_tab": true
   },
   "permissions": [
     "offscreen",
-    "activeTab",
     "storage",
     "cookies",
     "declarativeNetRequest",
     "sidePanel"
   ],
   "host_permissions": [
-    "*://music.163.com/*",
-    "*://*.xiami.com/*",
-    "*://*.qq.com/*",
-    "*://*.migu.cn/*",
-    "*://itunes.apple.com/*",
-    "*://api.bilibili.com/*",
-    "*://*.bilivideo.com/*",
-    "*://www.googleapis.com/youtube/v3/*",
-    "*://rapi.qingting.fm/*",
-    "*://lhttp.qingting.fm/*",
-    "http://*/",
-    "https://*/"
+    "http://*/*",
+    "https://*/*"
   ]
 }

@@ -1,43 +1,80 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<title>MusicFinder Options</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MusicFinder 设置</title>
 <link rel="stylesheet" href="css/options.css">
 </head>
 <body>
-<div class="mf-options">
-  <h2>MusicFinder</h2>
-
-  <div class="mf-opt">
-    <label>Theme Color</label>
-    <input type="color" id="themeColor">
-  </div>
-
-  <div class="mf-opt">
-    <label>Default Home Mode</label>
-    <label class="mf-radio"><input type="radio" name="homeMode" value="lyric"> Lyric Mode</label>
-    <label class="mf-radio"><input type="radio" name="homeMode" value="search"> Search Mode</label>
-  </div>
-
-  <div class="mf-opt">
-    <label>MV Source</label>
-    <label class="mf-radio"><input type="radio" name="mvSource" value="youtube"> YouTube</label>
-    <label class="mf-radio"><input type="radio" name="mvSource" value="bilibili"> Bilibili</label>
-  </div>
-
-  <div class="mf-opt">
-    <label>Playlist</label>
-    <div class="mf-btnrow">
-      <button id="importBtn">Import .mf</button>
-      <button id="exportBtn">Export</button>
-      <button id="resetBtn">Reset to Backup</button>
+<main class="page">
+  <header class="page-head">
+    <img src="img/icon128.png" alt="">
+    <div>
+      <h1>MusicFinder 设置</h1>
+      <p id="version"></p>
     </div>
-  </div>
+  </header>
 
-  <button id="saveBtn" class="mf-primary">Save</button>
-  <span id="mfStatus"></span>
-</div>
-<script src="js/options.js"></script>
+  <form id="settingsForm" class="card">
+    <h2>外观与搜索</h2>
+
+    <div class="opt">
+      <div class="opt-label"><b>主题色</b><span>按钮、高亮和进度条的颜色</span></div>
+      <div class="swatches" id="swatches"></div>
+      <input type="color" name="theme" id="theme" aria-label="自定义主题色">
+    </div>
+
+    <div class="opt">
+      <div class="opt-label"><b>默认平台</b><span>首次打开弹窗时选中的搜索平台</span></div>
+      <select name="defaultSource" id="defaultSource"></select>
+    </div>
+
+    <div class="opt">
+      <div class="opt-label"><b>每页条数</b><span>每次加载的搜索结果数量</span></div>
+      <select name="pageSize" id="pageSize">
+        <option value="15">15</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="50">50</option>
+      </select>
+    </div>
+
+    <div class="opt">
+      <div class="opt-label"><b>Apple 试听地区</b><span>iTunes 商店区域，中国大陆区无结果</span></div>
+      <select name="appleCountry" id="appleCountry">
+        <option value="HK">香港</option>
+        <option value="TW">台湾</option>
+        <option value="US">美国</option>
+        <option value="JP">日本</option>
+        <option value="GB">英国</option>
+      </select>
+    </div>
+
+    <div class="opt">
+      <div class="opt-label"><b>YouTube API Key</b><span>在 Google Cloud Console 启用 YouTube Data API v3 后获取</span></div>
+      <input type="password" name="youtubeKey" id="youtubeKey" placeholder="未填写则无法搜索 YouTube" autocomplete="off" spellcheck="false">
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="btn primary">保存设置</button>
+    </div>
+  </form>
+
+  <section class="card">
+    <h2>收藏</h2>
+    <p class="hint" id="favInfo"></p>
+    <div class="actions left">
+      <button type="button" class="btn" id="exportBtn">导出收藏</button>
+      <button type="button" class="btn" id="importBtn">导入收藏</button>
+      <button type="button" class="btn" id="restoreBtn">恢复导入前备份</button>
+      <button type="button" class="btn danger" id="clearBtn">清空收藏</button>
+    </div>
+    <p class="hint">导入支持本扩展导出的 .json / .mf 文件（包括 1.x 旧版格式）。导入或清空前会自动备份当前收藏。</p>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status"></div>
+<script type="module" src="js/options.js"></script>
 </body>
 </html>
